@@ -91,13 +91,25 @@ static std::string execCmd(const std::string& cmd) {
 
 static void sleepMs(int ms) { std::this_thread::sleep_for(std::chrono::milliseconds(ms)); }
 
+static std::string hexColor(const std::string& hex) {
+    std::string h = hex;
+    if (!h.empty() && h[0] == '#') h = h.substr(1);
+    int r = std::stoi(h.substr(0,2), nullptr, 16);
+    int g = std::stoi(h.substr(2,2), nullptr, 16);
+    int b = std::stoi(h.substr(4,2), nullptr, 16);
+    return "\033[38;2;" + std::to_string(r) + ";" + std::to_string(g) + ";" + std::to_string(b) + "m";
+}
+
 static void printBanner() {
-    std::cout << C_CYAN << C_BOLD
-              << " CCCCC   L      SSSSS   DDDDD   HH   HH \n"
-              << "C         L      S      D   D   HH   HH \n"
-              << "C         L      SSS    D   D   HHHHHHH \n"
-              << "C         L           S  D   D   HH   HH \n"
-              << " CCCCC   LLLLL   SSSSS   DDDDD   HH   HH \n"
+    std::string clr = hexColor("#ff00ff"); // magenta
+    std::cout << clr << C_BOLD
+              << " ________  ___       ________  ________  ___  ___     \n"
+              << "|\\   ____\\|\\  \\     |\\   ____\\|\\   ___ \\|\\  \\|\\  \\   \n"
+              << "\\ \\  \\___|\\ \\  \\    \\ \\  \\___|\\ \\  \\_|\\ \\ \\  \\\\\\  \\  \n"
+              << " \\ \\  \\    \\ \\  \\    \\ \\  \\    \\ \\  \\ \\ \\ \\ \\  \\\\\\  \\ \n"
+              << "  \\ \\  \\____\\ \\  \\____\\ \\ \\  \\ \\ \\ \\__\\_\\ \\ \\_______\\ \n"
+              << "   \\ \\_______\\ \\_______\\ \\ \\__\\ \\ \\__\\ \\__\\ \\|_______|\n"
+              << "    \\|_______|\\|_______|\\|__|\\|__|\\|__|    \\|_______| \n"
               << C_RESET
               << "   " << C_BOLD << "CLSDH" << C_RESET << " v" << VERSION << "\n"
               << "   " << C_BOLD << "CLSDH" << C_RESET << " - " << FULL_NAME_ID << "\n"
