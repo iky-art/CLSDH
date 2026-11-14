@@ -1,33 +1,31 @@
-# CLSDH - Link Checker CLI (C++)
+# CLSDH - Multi-Tool CLI Suite (C++)
 
 ```
- CCCCC   L      SSSSS   DDDDD   HH   HH 
-C         L      S      D   D   HH   HH 
-C         L      SSS    D   D   HHHHHHH 
-C         L           S  D   D   HH   HH 
- CCCCC   LLLLL   SSSSS   DDDDD   HH   HH 
+ ________  ___       ________  ________  ___  ___     
+|\   ____\|\  \     |\   ____\|\   ___ \|\  \|\  \   
+\ \  \___|\\ \  \    \ \  \___|\\ \  \_|\\ \  \\\\  \ 
+ \ \  \    \ \  \    \ \  \    \ \  \ \ \ \ \  \\\\  \
+  \ \  \____\ \  \____\ \ \  \ \ \ \__\_\ \ \_______\
+   \ \_______\\ \_______\ \ \__\ \ \__\ \__\ \|_______|
+    \|_______|\|_______|\|__|\|__|\|__|    \|_______|
 ```
 
 **CLSDH v2.0.0**  
 **Cek Link Sebelum Data Hilang** / **Check Links Before Data Loss**
 
-CLI cek link **real-time** yang ditulis dalam **C++**. Tidak perlu library eksternal — hanya butuh `g++`. Setiap hasil pengecekan dicetak begitu selesai, tidak perlu menunggu semua link selesai dicek.
+CLI multi-tool **real-time** yang ditulis dalam **C++**. Tidak perlu library eksternal — hanya butuh `g++`. Terdiri dari **49 tools** dalam satu binary.
 
 ---
 
-## 📌 Fitur
+## 📌 Fitur Utama
 
 | Fitur | Keterangan |
 |-------|------------|
-| **Real-time output** | Hasil muncul segera setiap link selesai dicek (dengan timestamp) |
-| **Concurrent** | Mengecek banyak link sekaligus (`-c` / concurrency) |
-| **CLI lengkap** | Opsi pendek dan panjang (`-f`, `-c`, `-t`, `-o`, dll.) |
-| **ASCII art banner** | Tampil saat program dijalankan |
-| **Status UP/DOWN** | Warna hijau untuk UP, merah untuk DOWN |
-| **Kode HTTP** | Menampilkan status kode (200, 404, 500, dst.) dan waktu respons (ms) |
-| **Simpan ke file** | `-o` / `--output` menyimpan hasil ke file (tanpa warna ANSI) |
-| **Auto-update** | `./checklink upd` untuk update otomatis ke versi terbaru |
-| **Input dari stdin** | Bisa menerima pipe dari `cat` atau redirection |
+| **49 tools dalam 1 binary** | Jaringan, sistem, file, enkoding, utilitas |
+| **Real-time output** | Hasil muncul segera setiap proses selesai (dengan timestamp) |
+| **ASCII art banner** | Tampil saat program dijalankan (warna magenta `#ff00ff`) |
+| **CLI lengkap** | Opsi pendek dan panjang |
+| **Warna terminal** | ANSI truecolor support |
 | **Tanpa dependensi** | Hanya butuh compiler `g++`, tidak perlu libcurl/OpenSSL |
 
 ---
@@ -36,159 +34,117 @@ CLI cek link **real-time** yang ditulis dalam **C++**. Tidak perlu library ekste
 
 ```bash
 cd /root/tools-check-pishink
-g++ -std=c++11 -O2 -pthread checklink.cpp -o checklink
+g++ -std=c++11 -O2 -pthread clsdh.cpp -o clsdh
 ```
-
-Jika ingin tanpa warna ANSI secara default, edit variabel `g_useColor` di kode atau gunakan opsi `--no-color`.
 
 ---
 
 ## 🚀 Cara Pemanggilan (Usage)
 
-### 1. Cek langsung beberapa link
 ```bash
-./checklink https://example.com http://example.org
+./clsdh <tool> [args...]
 ```
 
-### 2. Cek dari file (satu link per baris)
+### Contoh:
 ```bash
-./checklink -f links.txt
-```
-
-### 3. Cek dari file dengan pengaturan
-```bash
-./checklink -f links.txt -c 20 -t 10
-```
-- `-c 20` = 20 link dicek bersamaan (concurrency)
-- `-t 10` = timeout 10 detik per link
-
-### 4. Simpan hasil ke file output
-```bash
-./checklink -f links.txt -o hasil.txt
-```
-
-### 5. Tanpa warna ANSI (cocok untuk log / cron)
-```bash
-./checklink -f links.txt --no-color -o hasil.log
-```
-
-### 6. Baca dari stdin / pipe
-```bash
-cat links.txt | ./checklink
-# atau
-./checklink < links.txt
-```
-
-### 7. Update otomatis ke versi terbaru
-```bash
-./checklink upd
-```
-> **Peringatan:** Sebelum menggunakan `upd`, ubah baris `UPDATE_URL` di `checklink.cpp` ke alamat file binary `checklink` terbaru kamu (contoh GitHub Releases), lalu recompile.
-
-### 8. Bantuan dan versi
-```bash
-./checklink -h      # Tampilkan bantuan
-./checklink -v      # Tampilkan versi
+./clsdh -v                          # Lihat versi
+./clsdh list                        # Daftar semua tools
+./clsdh link-check https://example.com
+./clsdh tcp-port example.com 80
+./clsdh cpu-monitor
+./clsdh mem-monitor
+./clsdh http-get https://example.com
+./clsdh md5 "halo dunia"
+./clsdh base64-enc "clsdh"
 ```
 
 ---
 
-## 📋 Opsi CLI
+## 📋 Daftar Semua Tools (49)
 
-| Opsi Pendek | Opsi Panjang | Keterangan |
-|-------------|--------------|------------|
-| `-f <file>` | `--file <file>` | Baca daftar link dari file (satu link per baris) |
-| `-c <N>` | `--concurrency <N>` | Jumlah pengecekan bersamaan (default 30) |
-| `-t <sec>` | `--timeout <sec>` | Timeout per link dalam detik (default 10) |
-| `-o <file>` | `--output <file>` | Simpan hasil ke file (tanpa warna ANSI) |
-| | `--no-color` | Matikan warna ANSI output |
-| `upd` | `--update` | Update otomatis ke versi terbaru |
-| `-h` | `--help` | Tampilkan bantuan |
-| `-v` | `--version` | Tampilkan versi |
+| No | Tool | Keterangan |
+|----|------|------------|
+| 1 | `link-check` | Real-time HTTP link checker |
+| 2 | `tcp-port` | TCP port check |
+| 3 | `udp-port` | UDP port check |
+| 4 | `ping` | Ping host |
+| 5 | `dns-lookup` | DNS resolution |
+| 6 | `reverse-dns` | Reverse DNS (PTR) |
+| 7 | `http-headers` | HTTP headers (HEAD) |
+| 8 | `port-scan` | Port scanner |
+| 9 | `ntp-time` | NTP time sync |
+| 10 | `smtp-test` | SMTP banner check |
+| 11 | `http-post` | HTTP POST request |
+| 12 | `cpu-monitor` | Real-time CPU monitor |
+| 13 | `mem-monitor` | Real-time memory monitor |
+| 14 | `disk-monitor` | Real-time disk monitor |
+| 15 | `uptime` | System uptime |
+| 16 | `load-avg` | Real-time load average |
+| 17 | `proc-list` | Top processes |
+| 18 | `proc-watch` | Watch process (real-time) |
+| 19 | `net-stats` | Real-time network I/O |
+| 20 | `hostname` | Hostname |
+| 21 | `kernel` | Kernel info |
+| 22 | `os-info` | OS info |
+| 23 | `ip-addr` | IP addresses |
+| 24 | `route` | Routing table |
+| 25 | `file-checksum` | SHA256 checksum |
+| 26 | `file-watch` | Watch file changes |
+| 27 | `line-count` | Count lines in file |
+| 28 | `date-time` | Current date/time |
+| 29 | `calendar` | Calendar |
+| 30 | `base64-enc` | Base64 encode |
+| 31 | `base64-dec` | Base64 decode |
+| 32 | `md5` | MD5 hash |
+| 33 | `sha1` | SHA1 hash |
+| 34 | `sha256` | SHA256 hash |
+| 35 | `uuid` | Generate UUID |
+| 36 | `password-gen` | Generate password |
+| 37 | `http-get` | HTTP GET request |
+| 38 | `whois` | WHOIS lookup |
+| 39 | `ssl-cert` | SSL certificate info |
+| 40 | `banner-grab` | Service banner grab |
+| 41 | `proc-tree` | Process tree |
+| 42 | `disk-usage` | Disk usage (df -h) |
+| 43 | `users-list` | List system users |
+| 44 | `unix-timestamp` | Unix timestamp |
+| 45 | `url-encode` | URL encode |
+| 46 | `url-decode` | URL decode |
+| 47 | `crontab-list` | List cron jobs |
+| 48 | `top-cmd` | Top CPU processes |
+| 49 | `free-ram` | Memory free/used |
 
 ---
 
 ## 🖥️ Contoh Output
 
 ```
- CCCCC   L      SSSSS   DDDDD   HH   HH 
-C         L      S      D   D   HH   HH 
-C         L      SSS    D   D   HHHHHHH 
-C         L           S  D   D   HH   HH 
- CCCCC   LLLLL   SSSSS   DDDDD   HH   HH 
+ ________  ___       ________  ________  ___  ___     
+|\   ____\|\  \     |\   ____\|\   ___ \|\  \|\  \   
+...
+   CLSDH v2.0.0
    CLSDH - Cek Link Sebelum Data Hilang
    CLSDH - Check Links Before Data Loss
-   CLI • C++ • Tanpa dependensi eksternal • Real-time output
+   CLI • C++ • Real-time • Tanpa dependensi eksternal
 
-URLs: 4  Concurrency: 4  Timeout: 8s
-----------------------------------------------------------------------
-[10:51:08] [UP]   http://example.org                                              HTTP 200 OK  (180 ms)
-[10:51:08] [DOWN] https://example.com                                             HTTP 400 Bad Request  (190 ms)
-[10:51:08] [DOWN] http://127.0.0.1:9                                              ERR connection failed
-[10:51:08] [DOWN] https://tidakada-domain-xyz.com                                ERR DNS: Name or service not known
-----------------------------------------------------------------------
-Selesai. Total: 4 | UP: 1 | DOWN: 3
-```
-
-Setiap baris muncul **secara real-time** begitu pengecekan satu link selesai.
-
----
-
-## 📁 Format File Output (`-o`)
-
-File output disimpan **tanpa kode warna ANSI**, siap diproses lebih lanjut atau dilaporkan:
-
-```
-CLSDH v2.0.0 - Cek Link Sebelum Data Hilang / Check Links Before Data Loss
-Waktu: 10:51:08
-Total URL: 4
+URLs: 2  Concurrency: 30  Timeout: 10s
 ----------------------------------------------------------------------
 [10:51:08] [UP]   http://example.org                                              HTTP 200 OK  (180 ms)
 [10:51:08] [DOWN] https://example.com                                             HTTP 400 Bad Request  (190 ms)
 ----------------------------------------------------------------------
-Selesai. Total: 4 | UP: 1 | DOWN: 3
+Selesai. Total: 2 | UP: 1 | DOWN: 1
 ```
 
 ---
 
-## ⚠️ Catatan Penting
-
-### HTTP vs HTTPS
-Versi ini menggunakan **raw TCP socket (BSD socket)** tanpa OpenSSL, jadi:
-- Link **`http://`**: dapat dicek dengan akurat (menerima respons HTTP mentah).
-- Link **`https://`**: koneksi plain TCP ke port 443 biasanya tidak mendapat respons HTTP yang valid karena butuh TLS/SSL, jadi akan tampil sebagai `DOWN`/timeout.
-
-Jika ingin cek `https://` secara akurat, perlu ditulis ulang menggunakan **libcurl** (`-lcurl`) dengan dukungan TLS.
-
-### Auto-update (`./checklink upd`)
-1. Upload binary `checklink` hasil compile ke server/GitHub Releases kamu.
-2. Ubah baris ini di `checklink.cpp`:
-   ```cpp
-   static const char* UPDATE_URL = "https://contoh.com/checklink";
-   ```
-   Ganti dengan URL file binary terbaru kamu, misalnya:
-   ```cpp
-   static const char* UPDATE_URL = "https://github.com/user/repo/releases/download/v2.0.0/checklink";
-   ```
-3. Recompile:
-   ```bash
-   g++ -std=c++11 -O2 -pthread checklink.cpp -o checklink
-   ```
-4. Jalankan `./checklink upd`.
-
-> Binary yang diunduh harus sudah dikompilasi untuk arsitektur yang sama (aarch64/ARM64 di VPS kamu).
-
----
-
-## 📂 Struktur File
+## 📁 Struktur File
 
 | File | Keterangan |
 |------|------------|
-| `checklink.cpp` | Sumber kode C++ (CLI lengkap + ASCII art + auto-update) |
-| `checklink` | Hasil kompilasi (binary siap jalankan) |
-| `links.txt` | Contoh daftar link |
-| `hasil.txt` | Contoh hasil output file |
+| `clsdh.cpp` | Sumber kode C++ (49 tools) |
+| `clsdh` | Hasil kompilasi (binary siap jalankan) |
 | `README.md` | Panduan ini |
+| `.gitignore` | Git ignore file |
 
 ---
 
