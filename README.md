@@ -1,4 +1,9 @@
-# CLSDH - Multi-Tool CLI Suite (C++)
+# 🚀 CLSDH — Multi-Tool CLI Suite
+
+[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/iky-art/CLSDH/releases/tag/v2.0.0)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Language: C++](https://img.shields.io/badge/language-C%2B%2B-brightgreen.svg)](clsdh.cpp)
+[![Platform: Linux | macOS | Windows | Termux](https://img.shields.io/badge/platform-linux%20%7C%20macOS%20%7C%20windows%20%7C%20termux-orange.svg)](.)
 
 ```
  ________  ___       ________  ________  ___  ___     
@@ -10,148 +15,105 @@
     \|_______|\|_______|\|__|\|__|\|__|    \|_______|
 ```
 
-**CLSDH v2.0.0**  
-**Cek Link Sebelum Data Hilang** / **Check Links Before Data Loss**
+> **CLSDH** = **Cek Link Sebelum Data Hilang** / **Check Links Before Data Loss**
 
-CLI multi-tool **real-time** yang ditulis dalam **C++**. Tidak perlu library eksternal — hanya butuh `g++`. Terdiri dari **49 tools** dalam satu binary.
+CLI multi-tool **real-time** yang ditulis dalam **C++**. Tidak perlu library eksternal — hanya butuh compiler `g++`. Terdiri dari **49 tools** dalam satu binary untuk pemantauan jaringan, sistem, file, dan utilitas enkoding.
 
 ---
 
-## 📌 Fitur Utama
+## 📋 Daftar Isi
+
+- [🎯 Fitur Utama](#-fitur-utama)
+- [🛠️ Instalasi](#️-instalasi)
+- [▶️ Cara Pakai](#️-cara-pakai)
+- [📁 Struktur Dokumen](#-struktur-dokumen)
+- [🌐 Dukungan Platform](#-dukungan-platform)
+- [📄 Lisensi](#-lisensi)
+- [🔒 Keamanan](#-keamanan)
+
+---
+
+## 🎯 Fitur Utama
 
 | Fitur | Keterangan |
 |-------|------------|
-| **49 tools dalam 1 binary** | Jaringan, sistem, file, enkoding, utilitas |
-| **Real-time output** | Hasil muncul segera setiap proses selesai (dengan timestamp) |
-| **ASCII art banner** | Tampil saat program dijalankan (warna magenta `#ff00ff`) |
-| **CLI lengkap** | Opsi pendek dan panjang |
-| **Warna terminal** | ANSI truecolor support |
-| **Tanpa dependensi** | Hanya butuh compiler `g++`, tidak perlu libcurl/OpenSSL |
+| **49 Tools** | Satu binary, semua fungsi real-time |
+| **Real-time Output** | Hasil muncul segera dengan timestamp |
+| **ASCII Art Banner** | Tampil saat startup dengan warna magenta `#ff00ff` |
+| **Tanpa Dependensi** | Tidak perlu libcurl / OpenSSL |
+| **Multi-Platform** | Linux, macOS, Windows, Termux |
+| **CLI Lengkap** | Opsi pendek dan panjang |
 
 ---
 
-## 🛠️ Compile (Build)
+## 🛠️ Instalasi
 
+### Dari Source
 ```bash
-cd /root/tools-check-pishink
+git clone https://github.com/iky-art/CLSDH.git
+cd CLSDH
 g++ -std=c++11 -O2 -pthread clsdh.cpp -o clsdh
 ```
 
----
-
-## 🚀 Cara Pemanggilan (Usage)
-
+### Dari Release
 ```bash
-./clsdh <tool> [args...]
+wget https://github.com/iky-art/CLSDH/releases/download/v2.0.0/clsdh
+chmod +x clsdh
 ```
 
-### Contoh:
+---
+
+## ▶️ Cara Pakai
+
 ```bash
 ./clsdh -v                          # Lihat versi
 ./clsdh list                        # Daftar semua tools
 ./clsdh link-check https://example.com
 ./clsdh tcp-port example.com 80
 ./clsdh cpu-monitor
-./clsdh mem-monitor
-./clsdh http-get https://example.com
-./clsdh md5 "halo dunia"
-./clsdh base64-enc "clsdh"
 ```
 
 ---
 
-## 📋 Daftar Semua Tools (49)
-
-| No | Tool | Keterangan |
-|----|------|------------|
-| 1 | `link-check` | Real-time HTTP link checker |
-| 2 | `tcp-port` | TCP port check |
-| 3 | `udp-port` | UDP port check |
-| 4 | `ping` | Ping host |
-| 5 | `dns-lookup` | DNS resolution |
-| 6 | `reverse-dns` | Reverse DNS (PTR) |
-| 7 | `http-headers` | HTTP headers (HEAD) |
-| 8 | `port-scan` | Port scanner |
-| 9 | `ntp-time` | NTP time sync |
-| 10 | `smtp-test` | SMTP banner check |
-| 11 | `http-post` | HTTP POST request |
-| 12 | `cpu-monitor` | Real-time CPU monitor |
-| 13 | `mem-monitor` | Real-time memory monitor |
-| 14 | `disk-monitor` | Real-time disk monitor |
-| 15 | `uptime` | System uptime |
-| 16 | `load-avg` | Real-time load average |
-| 17 | `proc-list` | Top processes |
-| 18 | `proc-watch` | Watch process (real-time) |
-| 19 | `net-stats` | Real-time network I/O |
-| 20 | `hostname` | Hostname |
-| 21 | `kernel` | Kernel info |
-| 22 | `os-info` | OS info |
-| 23 | `ip-addr` | IP addresses |
-| 24 | `route` | Routing table |
-| 25 | `file-checksum` | SHA256 checksum |
-| 26 | `file-watch` | Watch file changes |
-| 27 | `line-count` | Count lines in file |
-| 28 | `date-time` | Current date/time |
-| 29 | `calendar` | Calendar |
-| 30 | `base64-enc` | Base64 encode |
-| 31 | `base64-dec` | Base64 decode |
-| 32 | `md5` | MD5 hash |
-| 33 | `sha1` | SHA1 hash |
-| 34 | `sha256` | SHA256 hash |
-| 35 | `uuid` | Generate UUID |
-| 36 | `password-gen` | Generate password |
-| 37 | `http-get` | HTTP GET request |
-| 38 | `whois` | WHOIS lookup |
-| 39 | `ssl-cert` | SSL certificate info |
-| 40 | `banner-grab` | Service banner grab |
-| 41 | `proc-tree` | Process tree |
-| 42 | `disk-usage` | Disk usage (df -h) |
-| 43 | `users-list` | List system users |
-| 44 | `unix-timestamp` | Unix timestamp |
-| 45 | `url-encode` | URL encode |
-| 46 | `url-decode` | URL decode |
-| 47 | `crontab-list` | List cron jobs |
-| 48 | `top-cmd` | Top CPU processes |
-| 49 | `free-ram` | Memory free/used |
-
----
-
-## 🖥️ Contoh Output
+## 📁 Struktur Dokumen
 
 ```
- ________  ___       ________  ________  ___  ___     
-|\   ____\|\  \     |\   ____\|\   ___ \|\  \|\  \   
-...
-   CLSDH v2.0.0
-   CLSDH - Cek Link Sebelum Data Hilang
-   CLSDH - Check Links Before Data Loss
-   CLI • C++ • Real-time • Tanpa dependensi eksternal
-
-URLs: 2  Concurrency: 30  Timeout: 10s
-----------------------------------------------------------------------
-[10:51:08] [UP]   http://example.org                                              HTTP 200 OK  (180 ms)
-[10:51:08] [DOWN] https://example.com                                             HTTP 400 Bad Request  (190 ms)
-----------------------------------------------------------------------
-Selesai. Total: 2 | UP: 1 | DOWN: 1
+CLSDH/
+├── doc/                    # Dokumentasi umum (ID & EN)
+├── termux/                 # Panduan Termux (ID & EN)
+├── macos/                  # Panduan macOS (ID & EN)
+├── windows/                # Panduan Windows (ID & EN)
+├── linux/                  # Panduan Linux (ID & EN)
+├── LICENSE
+├── SECURITY.md
+├── DISCLAIMER.md
+└── README.md
 ```
 
 ---
 
-## 📁 Struktur File
+## 🌐 Dukungan Platform
 
-| File | Keterangan |
-|------|------------|
-| `clsdh.cpp` | Sumber kode C++ (49 tools) |
-| `clsdh` | Hasil kompilasi (binary siap jalankan) |
-| `README.md` | Panduan ini |
-| `.gitignore` | Git ignore file |
+| Platform | Status | Folder |
+|----------|--------|--------|
+| Linux | ✅ Supported | `linux/` |
+| macOS | ✅ Supported | `macos/` |
+| Windows | ✅ Supported | `windows/` |
+| Termux | ✅ Supported | `termux/` |
 
 ---
 
 ## 📄 Lisensi
 
-Dibuat untuk keperluan internal. Bebas dimodifikasi dan digunakan.
+Diberlisikan di bawah [MIT License](LICENSE).
 
 ---
 
-**CLSDH v2.0.0** — Cek Link Sebelum Data Hilang / Check Links Before Data Loss
+## 🔒 Keamanan
+
+Lihat [SECURITY.md](SECURITY.md) untuk kebijakan dan kontak laporan kerentanan.
+
+---
+
+> Dibuat dengan ❤️ oleh [iky-art](https://instagram.com/iky-art)  
+> **CLSDH v2.0.0** — Cek Link Sebelum Data Hilang / Check Links Before Data Loss
