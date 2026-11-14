@@ -1,0 +1,15 @@
+# Binaries
+clsdh
+checklink
+
+# Build artifacts
+*.o
+*.out
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+hasil.txt
